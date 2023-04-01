@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ReactLoading from 'react-loading';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 import renderImage from '../components/ImagePreview';
@@ -27,7 +28,6 @@ const CollectionPage = () => {
     };
     
     const handleRowClick = async(selectedRow: COLLECT) => {
-        console.log(selectedRow.address);
         const { data } = await axios.get( `${BASE_URL}/getNFTs/`, { params: { occur: selectedRow.address } });
         const result = data.data;
 
@@ -54,8 +54,7 @@ const CollectionPage = () => {
     useEffect(() => {
         async function fetchData(){
             try{
-                const response = await axios.get(`http://localhost:8000/getCollections`);
-                console.log("data ", response.status, response.data)
+                const response = await axios.get(`${BASE_URL}/getCollections`);
                 setCollects(response.data.data);
             } catch(err){
                 console.log(`Error retrieving Collections: ${err}`);
@@ -63,7 +62,7 @@ const CollectionPage = () => {
         }
 
         fetchData();
-    }, []);
+    }, [BASE_URL]);
     
     return (
         <TableContainer component={Paper}>
@@ -93,7 +92,8 @@ const CollectionPage = () => {
                 </TableHead>
                 <TableBody>
                     {
-                        collects && collects.length >0 && collects.map((nft:any) => (
+                        collects && collects.length >0
+                        ? collects.map((nft:any) => (
                             <TableRow
                                 hover
                                 key={nft.id}
@@ -111,6 +111,14 @@ const CollectionPage = () => {
                                 <TableCell align="center">{nft.fields.volumn}</TableCell>
                             </TableRow>
                         ))
+                        :
+                        <TableRow>
+                            <TableCell colSpan={4}>
+                                <div className='flex justify-center'>
+                                    <ReactLoading type = "bubbles" color="#0000ff" height={'20%'} width={'20%'} />
+                                </div>
+                            </TableCell>
+                        </TableRow>
                     }					
                 </TableBody>
             </Table>

@@ -1,20 +1,39 @@
 import { useState } from "react";
 import axios from 'axios';
+import ReactLoading from 'react-loading';
 import { BASE_URL } from "../others/dataTypes";
 
 const PageLayout = ( props:any  ) => {
     const [show, setShow] = useState(false);
     const [profile, setProfile] = useState(false);
+    const [loading, setLoading] = useState(false);
     const handleRedirect = async() => {
         location.replace(`/`);
     }
 
     const handleImportClick = async() => {
-        await axios.get( `${BASE_URL}/scraping`);
+        try {
+            setLoading(true);
+            console.log('HI')
+            const AB = await axios.get( `https://sudomonitor.vercel.app/scraping`);
+            console.log('AB', AB);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+            //location.replace(`/`);
+        }
     }
 
     return (
         <>
+        {
+            loading 
+            ?
+            <div className='flex justify-center mt-[10%]'>
+                <ReactLoading type = "bubbles" color="#0000ff" height={'20%'} width={'20%'} />
+            </div>
+            :
             <div className="absolute bg-gray-200 w-full min-height-[600px]">
                 {/* Navigation starts */}
                 {/* Mobile */}
@@ -205,6 +224,7 @@ const PageLayout = ( props:any  ) => {
                     </div>
                 </div>
             </div>
+        }
         </>
     );
 }
