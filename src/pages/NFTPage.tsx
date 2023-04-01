@@ -75,7 +75,7 @@ const NFTPage = () => {
                 }
             </div>
             <div className="flex flex-wrap justify-center space-x-6 space-y-6">
-                {nftData.map((nft:any, idx:number) => (
+                {nftData?.map((nft:any, idx:number) => (
                     //  <div key={nft.id} className="m-4 sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
                     idx == 0
                         ?

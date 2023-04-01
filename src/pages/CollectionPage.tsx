@@ -54,7 +54,8 @@ const CollectionPage = () => {
     useEffect(() => {
         async function fetchData(){
             try{
-                const response = await axios.get(`${BASE_URL}/getCollections`);
+                const response = await axios.get(`http://localhost:8000/getCollections`);
+                console.log("data ", response.status, response.data)
                 setCollects(response.data.data);
             } catch(err){
                 console.log(`Error retrieving Collections: ${err}`);
@@ -91,24 +92,26 @@ const CollectionPage = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {collects.map((nft:any) => (
-                        <TableRow
-                            hover
-                            key={nft.id}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            onClick={() => handleRowClick(nft.fields)}
-                            style={{cursor: 'pointer'}}
-                        >
-                            <TableCell component="th" scope="row">
-                                {
-                                    renderImage(nft.fields.logoUrl, nft.fields.name)
-                                }
-                            </TableCell>
-                            <TableCell align="center">{nft.fields.listings}</TableCell>
-                            <TableCell align="center">{nft.fields.floorPrice}</TableCell>
-                            <TableCell align="center">{nft.fields.volumn}</TableCell>
-                        </TableRow>
-                    ))}					
+                    {
+                        collects && collects.length >0 && collects.map((nft:any) => (
+                            <TableRow
+                                hover
+                                key={nft.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                onClick={() => handleRowClick(nft.fields)}
+                                style={{cursor: 'pointer'}}
+                            >
+                                <TableCell component="th" scope="row">
+                                    {
+                                        renderImage(nft.fields.logoUrl, nft.fields.name)
+                                    }
+                                </TableCell>
+                                <TableCell align="center">{nft.fields.listings}</TableCell>
+                                <TableCell align="center">{nft.fields.floorPrice}</TableCell>
+                                <TableCell align="center">{nft.fields.volumn}</TableCell>
+                            </TableRow>
+                        ))
+                    }					
                 </TableBody>
             </Table>
         </TableContainer>

@@ -27,4 +27,5 @@ export interface ITableHCellProps {
     handleSort: any;
 }
 
+//export const BASE_URL:string = "https://sudomonitor.vercel.app";
 export const BASE_URL:string = "http://localhost:8000";
